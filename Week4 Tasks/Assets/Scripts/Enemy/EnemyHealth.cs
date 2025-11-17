@@ -1,0 +1,23 @@
+using UnityEngine;
+
+public class EnemyHealth : MonoBehaviour
+{
+    public float maxHealth = 30;
+    public float currentHealth;
+    [SerializeField] private GameObject enemyDeath;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0) 
+        {
+            Instantiate(enemyDeath, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+    }
+}
