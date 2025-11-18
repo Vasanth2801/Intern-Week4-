@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.XR.GoogleVr;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -28,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
     bool isDashing = false;
     bool canDash = true;
     bool dashPressed = false;
+
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockBackForce = 8f;
+    [SerializeField] private float knockBackDuration = 0.1f;
+    bool isKnocked = false;
     
 
     void Awake()
@@ -76,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDashing)
+        if(isDashing || isKnocked)
         {
             return;
         }
@@ -141,5 +145,24 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    public void KnockBack(Vector2 hitDirection)
+    {
+        if(isKnocked)
+        {
+            return;
+        }
+
+        StartCoroutine(KnockBackRoutine(hitDirection));
+    }
+
+    IEnumerator KnockBackRoutine(Vector2 hitDirection)
+    {
+        isKnocked = true;
+        rb.linearVelocity = movement.normalized * knockBackForce;
+        yield return new WaitForSeconds(knockBackDuration);
+        rb.linearVelocity = Vector2.zero;
+        isKnocked = false;
     }
 }

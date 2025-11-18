@@ -20,6 +20,19 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        float distance = Vector2.Distance(player.position,transform.position);
+
+        if(distance <= attackRange)
+        {
+            isChasing = false;
+            rb.linearVelocity = Vector2.zero;
+            animator.SetBool("isRunning", false);
+            Attack();
+            return;
+        }
+
+
+        
         if(isChasing == true)
         {
             if(player.position.x > transform.position.x && facingDirection == -1 || player.position.x< transform.position.x && facingDirection == 1)
@@ -34,15 +47,7 @@ public class Enemy : MonoBehaviour
         }
 
 
-        float distance = Vector2.Distance(player.position, transform.position);
-        if(distance > attackRange)
-        {
-            Attack();
-        }
-        else
-        {
-            isChasing = false;
-        }
+        
 
     }
 
@@ -61,11 +66,13 @@ public class Enemy : MonoBehaviour
 
     void Attack()
     {
-        
+        animator.SetTrigger("Attack");   
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayer);
 
         foreach(Collider2D hitCollider in hitPlayer)
-        {  
+        {
+            Vector2 pushDir = (player.position - transform.position);
+            player.GetComponent<PlayerMovement>().KnockBack(pushDir);
             Debug.Log("Attacked Player");
         }
     }

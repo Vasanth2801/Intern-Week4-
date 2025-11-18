@@ -1,15 +1,13 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
     public float maxHealth = 30;
     public float currentHealth;
     [SerializeField] private GameObject enemyDeath;
-
-    private void Start()
-    {
-        currentHealth = maxHealth;
-    }
+    
 
     public void TakeDamage(float damage)
     {
@@ -18,6 +16,7 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(enemyDeath, transform.position, Quaternion.identity);
             Destroy(gameObject);
+            KillManager.instance.AddKill();
         }
     }
 }
