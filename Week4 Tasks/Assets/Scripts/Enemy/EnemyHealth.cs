@@ -8,15 +8,14 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth;
     [SerializeField] private GameObject enemyDeath;
     
-
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0) 
-        {
-            Instantiate(enemyDeath, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-            KillManager.instance.AddKill();
+        {  
+           Instantiate(enemyDeath, transform.position, Quaternion.identity);
+           UIManager.instance.AddKill();
+           Destroy(gameObject);
         }
     }
 }

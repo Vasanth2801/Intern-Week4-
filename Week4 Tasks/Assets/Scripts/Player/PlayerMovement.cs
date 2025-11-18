@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     PlayerController controller;
     Vector2 movement;
     Animator animator;
-    private EnemyHealth enemyHealth;
     [SerializeField] TrailRenderer trailRenderer;
 
     [Header("AttackReferences")]
@@ -35,8 +34,7 @@ public class PlayerMovement : MonoBehaviour
     
 
     void Awake()
-    {
-        enemyHealth = FindObjectOfType<EnemyHealth>();
+    { 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         controller = new PlayerController();
@@ -114,8 +112,13 @@ public class PlayerMovement : MonoBehaviour
 
             foreach (Collider2D hit in hitEnemies)
             {
-                enemyHealth.TakeDamage(10);
-                Debug.Log("Damage done to enemy ");
+                var eh = hit.GetComponent<EnemyHealth>();
+                if (eh != null)
+                {
+                    eh.TakeDamage(10);
+                    Debug.Log("Damage done to enemy ");
+                }
+                
             }
         }
     }
@@ -131,8 +134,10 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         canDash = false;
         rb.AddForce(movement * dashSpeed, ForceMode2D.Impulse);
+        trailRenderer.emitting = true;
         yield return new WaitForSeconds(dashDuration);
         rb.linearVelocity = Vector2.zero;
+        trailRenderer.emitting = false;
         isDashing = false;
         yield return new WaitForSeconds(dashCoolDown);
         canDash = true;

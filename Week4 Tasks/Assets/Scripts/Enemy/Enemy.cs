@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] Transform player;
-    [SerializeField] float speed = 4f;
     Rigidbody2D rb;
     bool isChasing;
     Animator animator;
+
+    [Header("Enemy Settings")]
+    [SerializeField] float speed = 4f;
     [SerializeField] int facingDirection = 1;
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackRange = 2;
@@ -16,6 +19,7 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
@@ -31,8 +35,6 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-
-        
         if(isChasing == true)
         {
             if(player.position.x > transform.position.x && facingDirection == -1 || player.position.x< transform.position.x && facingDirection == 1)
@@ -45,10 +47,6 @@ public class Enemy : MonoBehaviour
         {
                Chase();
         }
-
-
-        
-
     }
 
     void Chase()
