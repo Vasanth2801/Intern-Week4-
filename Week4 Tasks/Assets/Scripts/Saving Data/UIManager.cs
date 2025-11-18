@@ -34,6 +34,15 @@ public class UIManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void SetKillCount(int count)
+    {
+        killCount = count;
+        if(DataManager.instance != null)
+        {
+            DataManager.instance.enemyState.killCount = count;
+        }
+    }
+
     void UpdateUI()
     {
         killText.text = "KillCount: " + killCount.ToString();
@@ -41,13 +50,30 @@ public class UIManager : MonoBehaviour
 
     public void SaveData()
     {
-        DataManager.instance.SaveFromJson();
+        if(DataManager.instance != null)
+        {
+            DataManager.instance.SaveFromJson();
+        }
+        else
+        {
+            Debug.Log("No Save File Found");
+        }
+    
     }
 
     public void LoadData()
     {
-        DataManager.instance.LoadFromJson();
-        killText.text = "KillCount: " + DataManager.instance.enemyState.killCount;
+        if(DataManager.instance != null)
+        {
+            DataManager.instance.LoadFromJson();
+            killText.text = "KillCount: " + DataManager.instance.enemyState.killCount;
+            SetKillCount(DataManager.instance.enemyState.killCount);
+        }
+        else
+        {
+            Debug.Log("No Data Found");
+        }
+        
     }
 
     public void DeleteData()

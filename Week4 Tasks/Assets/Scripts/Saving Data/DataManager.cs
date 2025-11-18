@@ -27,7 +27,6 @@ public class DataManager : MonoBehaviour
         Debug.Log(filePath);
         File.WriteAllText(filePath, killState);
         Debug.Log("Save File Created");
-
     }
 
     public void LoadFromJson()
@@ -38,6 +37,10 @@ public class DataManager : MonoBehaviour
         {
             string killState = File.ReadAllText(filePath);
             enemyState = JsonUtility.FromJson<EnemyKillState>(killState);
+            if(UIManager.instance != null )
+            {
+                UIManager.instance.SetKillCount(enemyState.killCount);
+            }
             Debug.Log("Loaded Successfully");
         }
     }
