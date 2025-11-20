@@ -4632,7 +4632,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1304367122}
-  - component: {fileID: 1304367121}
   m_Layer: 0
   m_Name: PlayerSwitch
   m_TagString: Untagged
@@ -4640,20 +4639,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1304367121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1304367120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad060291b725e4843807ac6c01aeef34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerSwitch
-  player1: {fileID: 297422752}
-  player2: {fileID: 1606975029}
 --- !u!4 &1304367122
 Transform:
   m_ObjectHideFlags: 0
@@ -5661,7 +5646,7 @@ MonoBehaviour:
   facingDirection: 1
   trailRenderer: {fileID: 1714884645}
   attackPoint: {fileID: 279969271}
-  attackRange: 0.14
+  attackRange: 0.24
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -5672,6 +5657,8 @@ MonoBehaviour:
   knockBackForce: 8
   knockBackDuration: 0.5
   powerupEffect: {fileID: 11400000, guid: 448e50147015dc04191aae6648946ec5, type: 2}
+  player1: {fileID: 297422752}
+  player2: {fileID: 1606975029}
 --- !u!114 &1714884641
 MonoBehaviour:
   m_ObjectHideFlags: 0

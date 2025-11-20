@@ -36,6 +36,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Powerup Settings")]
     public DamagePowerup powerupEffect;
 
+    [Header("Player Switch Settings")]
+    [SerializeField] private GameObject player1;
+    [SerializeField] private GameObject player2;
+
     void Awake()
     { 
         rb = GetComponent<Rigidbody2D>();
@@ -43,6 +47,12 @@ public class PlayerMovement : MonoBehaviour
         controller = new PlayerController();
         MovementCalling();
         Dashing();
+    }
+
+    private void Start()
+    {
+        player1.SetActive(true);
+        player2.SetActive(false);
     }
 
     void MovementCalling()
@@ -57,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Button Pressed");
         };
-        
     }
 
     private void OnEnable()
@@ -72,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        
         if (movement.x > 0 && transform.localScale.x < 0 || movement.x < 0 && transform.localScale.x > 0)
         {
             Flip();
@@ -81,6 +89,11 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             ActivateCurrentPower();
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            SwitchingPlayer();
         }
     }
 
@@ -219,5 +232,12 @@ public class PlayerMovement : MonoBehaviour
             ApplyPowerup(powerupEffect);
             powerupEffect = null;
         }
+    }
+
+    void SwitchingPlayer()
+    {
+        bool isPlayer1Active = player1.activeSelf;
+        player1.SetActive(!isPlayer1Active);
+        player2.SetActive(isPlayer1Active);
     }
 }
