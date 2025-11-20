@@ -19,7 +19,7 @@ public class ShopManager : MonoBehaviour
     {
         moneyText.text = "Money: " + money.ToString();
 
-        if(shopButtons != null && shopButtons.Length > 3)
+        if(shopButtons != null && shopButtons.Length >= 3)
         {
             shopButtons[0].interactable = money >= 50;
             shopButtons[1].interactable = money >= 30;

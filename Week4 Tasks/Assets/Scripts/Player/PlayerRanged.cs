@@ -1,7 +1,7 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerRanged : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float speed = 5f;
@@ -11,14 +11,8 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     PlayerController controller;
     Vector2 movement;
-    Animator animator;
+    [SerializeField] Animator animator;
     [SerializeField] TrailRenderer trailRenderer;
-
-    [Header("AttackReferences")]
-    [SerializeField] Transform attackPoint;
-    [SerializeField] private float attackRange = 0.5f;
-    public LayerMask enemyLayer;
-    public int attackDamage = 10;
 
     [Header("Dash Settings")]
     [SerializeField] private float dashSpeed = 7f;
@@ -36,10 +30,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Powerup Settings")]
     public DamagePowerup powerupEffect;
 
+
     void Awake()
-    { 
+    {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponentInChildren<Animator>();
         controller = new PlayerController();
         MovementCalling();
         Dashing();
@@ -56,8 +50,9 @@ public class PlayerMovement : MonoBehaviour
         controller.Player.Dash.performed += ctx => dashPressed = true;
         {
             Debug.Log("Button Pressed");
-        };
-        
+        }
+        ;
+
     }
 
     private void OnEnable()
@@ -72,13 +67,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        
+
         if (movement.x > 0 && transform.localScale.x < 0 || movement.x < 0 && transform.localScale.x > 0)
         {
             Flip();
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             ActivateCurrentPower();
         }
@@ -86,14 +81,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDashing || isKnocked)
+        if (isDashing || isKnocked)
         {
             return;
         }
-         Move();
-         Attack();
+        Move();
+        Attack();
 
-        if(canDash == true && dashPressed == true)
+        if (canDash == true && dashPressed == true)
         {
             dashPressed = false;
             StartCoroutine(Dash());
@@ -111,29 +106,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.sqrMagnitude);
     }
 
+
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             animator.SetTrigger("Attack");
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-
-            foreach (Collider2D hit in hitEnemies)
-            {
-                var eh = hit.GetComponent<EnemyHealth>();
-                if (eh != null)
-                {
-                    eh.TakeDamage(attackDamage);
-                    Debug.Log("Damage done to enemy ");
-                }
-
-                var bh = hit.GetComponent<BossHealth>();
-                if (bh != null)
-                {
-                    bh.BossTakeDamge(attackDamage);
-                    Debug.Log("Damage done to boss ");
-                }
-            }
         }
     }
 
@@ -157,18 +135,10 @@ public class PlayerMovement : MonoBehaviour
         canDash = true;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (attackPoint == null)
-        {
-            return;
-        }
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
 
     public void KnockBack(Vector2 hitDirection)
     {
-        if(isKnocked)
+        if (isKnocked)
         {
             return;
         }
@@ -191,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         var TimePowerup = speedPowerup as TimePowerup;
 
-        if(TimePowerup != null)
+        if (TimePowerup != null)
         {
             StartCoroutine(TimePowerup.PowerupDuration(gameObject));
         }
@@ -214,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ActivateCurrentPower()
     {
-        if(powerupEffect != null)
+        if (powerupEffect != null)
         {
             ApplyPowerup(powerupEffect);
             powerupEffect = null;
