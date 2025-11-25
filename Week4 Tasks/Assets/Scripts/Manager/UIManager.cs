@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
-   // [SerializeField] private TextMeshProUGUI killText;
-   // [SerializeField] private int killCount;
+    [SerializeField] private TextMeshProUGUI currencyText;
+    [SerializeField] private int currency;
     public EnemyKillState enemyState = new EnemyKillState();
     public static bool isGamePaused = false;
     public GameObject pauseMenuUI;
@@ -28,8 +28,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-     //   killCount = 0;
-       // killText.text = "KillCount: " + killCount;
+       currency = 0;
+       currencyText.text = "Currency: " + currency;
     }
 
     private void Update()
@@ -63,14 +63,14 @@ public class UIManager : MonoBehaviour
 
     public void AddKill()
     {
-     //   killCount++;
+        currency++;
         DataManager.instance.enemyState.killCount += 1;
         UpdateUI();
     }
 
     public void SetKillCount(int count)
     {
-        //  killCount = count;
+        currency = count;
         if(DataManager.instance != null)
         {
             DataManager.instance.enemyState.killCount = count;
@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
 
     void UpdateUI()
     {
-        //  killText.text = "KillCount: " + killCount.ToString();
+        currencyText.text = "KillCount: " + currency.ToString();
     }
 
     public void SaveData()
@@ -100,7 +100,7 @@ public class UIManager : MonoBehaviour
         if(DataManager.instance != null)
         {
             DataManager.instance.LoadFromJson();
-          //  killText.text = "KillCount: " + DataManager.instance.enemyState.killCount;
+           currencyText.text = "Currency: " + DataManager.instance.enemyState.killCount;
             SetKillCount(DataManager.instance.enemyState.killCount);
         }
         else

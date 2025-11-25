@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float speed = 5f;
+    [SerializeField] private float minSpeed = 1f;
     [SerializeField] private int facingDirection = 1;
+    private float baseSpeed;
 
     [Header("Reference Settings")]
     Rigidbody2D rb;
@@ -40,6 +43,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform firePoint;
     [SerializeField] int rangedAttackDamage = 5;
 
+    [Header("Player Stamina Settings")]
+    [SerializeField] private float maxStamina = 100f;
+    [SerializeField] float currentStamina;
+    [SerializeField] Slider staminaBar;
+    [SerializeField] float runCost = 10f;
+    [SerializeField] float staminaRegenRate = 5f;
+
+    [Header("Shield Settings")]
+    [SerializeField] bool isShielded = false;
+    [SerializeField] GameObject shieldObject;
+    [SerializeField] float ShieldDuration = 1f;
+    [SerializeField] float shieldCoolDown = 5f;
+    [SerializeField] bool canShield = true;
+
     void Awake()
     { 
         rb = GetComponent<Rigidbody2D>();
@@ -47,9 +64,14 @@ public class PlayerMovement : MonoBehaviour
         controller = new PlayerController();
         MovementCalling();
         Dashing();
+
+      
+        baseSpeed = speed;
+
+        currentStamina = maxStamina;
+        staminaBar.value = currentStamina / maxStamina;
     }
 
-   
     void MovementCalling()
     {
         controller.Player.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
@@ -81,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             ActivateCurrentPower();
         }
@@ -89,6 +111,11 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
+        }
+
+        if(canShield && !isShielded)
+        {
+            CheckShield();
         }
     }
 
@@ -101,12 +128,27 @@ public class PlayerMovement : MonoBehaviour
          Move();
          Attack();
 
-        if(canDash == true && dashPressed == true)
+        if((canDash == true && dashPressed == true) && currentStamina >= 0)
         {
             dashPressed = false;
             StartCoroutine(Dash());
             Debug.Log("Started Dashing");
         }
+    }
+
+    void CheckShield()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            shieldObject.SetActive(true);
+            isShielded = true;
+            NoShield();
+        }
+    }
+
+    void NoShield()
+    {
+        StartCoroutine(ShieldTime());
     }
 
     private void Move()
@@ -115,8 +157,28 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(move);
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Horizontal", movement.y);
-
         animator.SetFloat("Horizontal", movement.sqrMagnitude);
+        currentStamina -= movement.sqrMagnitude * runCost * Time.deltaTime;
+
+        if(currentStamina <= 0f)
+        {
+            currentStamina = 0f;
+            speed = minSpeed;
+        }
+        else
+        {
+            if (speed < baseSpeed)
+            {
+                speed = baseSpeed;
+            }
+        }
+
+        staminaBar.value = currentStamina / maxStamina;
+
+        if(currentStamina < maxStamina && movement.sqrMagnitude == 0)
+        {
+            StartCoroutine(RegenerateStamina());
+        }
     }
 
     void Attack()
@@ -128,6 +190,12 @@ public class PlayerMovement : MonoBehaviour
 
             foreach(Collider2D hit in hitEnemies)
             {
+                if(isShielded)
+                {
+                    Debug.Log("Player is shielded, no damage taken");
+                    return;
+                }
+
                 var eh = hit.GetComponent<EnemyHealth>();
                 if (eh != null)
                 {
@@ -236,5 +304,30 @@ public class PlayerMovement : MonoBehaviour
             ApplyPowerup(powerupEffect);
             powerupEffect = null;
         }
+    }
+
+    IEnumerator RegenerateStamina()
+    {
+       yield return new WaitForSeconds(1f);
+        if(currentStamina < maxStamina)
+        {
+            currentStamina += staminaRegenRate / 10f;
+            if(currentStamina > maxStamina)
+            {
+                currentStamina = maxStamina;
+            }
+            staminaBar.value = currentStamina / maxStamina;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator ShieldTime()
+    {
+        yield return new WaitForSeconds(ShieldDuration);
+        shieldObject.SetActive(false);
+        isShielded = false;
+        canShield = false;
+        yield return new WaitForSeconds(shieldCoolDown);
+        canShield = true;
     }
 }
