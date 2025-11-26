@@ -42,12 +42,12 @@ public class GameManager : MonoBehaviour
             if (UIManager.instance != null)
             {
                 UIManager.instance.LoadData();
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(2);
             }
             else
             {
                 DataManager.instance.LoadFromJson();
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(2);
             }
         }
         else
