@@ -7,12 +7,10 @@ public class EnemyHealth : MonoBehaviour
     public float maxHealth = 30;
     public float currentHealth;
     [SerializeField] private GameObject enemyDeath;
-    EnemySpawner enemySpawner;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        enemySpawner = GetComponentInParent<EnemySpawner>();
     }
 
     public void TakeDamage(float damage)

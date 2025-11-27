@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
    public static PlayerHealth instance;
-   
    public int maxHealth = 100;
    public int currentHealth;
    public HealthBar healthBar;
@@ -22,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void PlayerDamage(float damage)
@@ -34,5 +34,6 @@ public class PlayerHealth : MonoBehaviour
             Destroy(gameObject);
             UIManager.instance.GameOver();
         }
+        DontDestroyOnLoad(gameObject);
     }
 }

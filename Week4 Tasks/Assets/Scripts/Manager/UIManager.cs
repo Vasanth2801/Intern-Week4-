@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -12,6 +11,7 @@ public class UIManager : MonoBehaviour
     public static bool isGamePaused = false;
     public GameObject pauseMenuUI;
     public GameObject gameOverMenu;
+    public GameObject bgPanel;
 
     private void Awake()
     {
@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        bgPanel.SetActive(false);
         Time.timeScale = 1f;
         isGamePaused = false;
     }
@@ -57,6 +58,7 @@ public class UIManager : MonoBehaviour
     void Pause()
     {
         pauseMenuUI.SetActive(true);
+        bgPanel.SetActive(true);
         Time.timeScale = 0f;
         isGamePaused = true;
     }
