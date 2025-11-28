@@ -32,7 +32,7 @@ public class DataManager : MonoBehaviour
     {
         string filePath = Application.persistentDataPath + "/KillState";
 
-        if (CheckExists(filePath))
+        if(CheckExists(filePath))
         {
             string killState = File.ReadAllText(filePath);
             enemyState = JsonUtility.FromJson<EnemyKillState>(killState);

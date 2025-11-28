@@ -1,62 +1,66 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    public int money = 200;
-    [SerializeField] private TextMeshProUGUI moneyText;
-    int shopIndex = 0;
-    [SerializeField] private Button[] shopButtons;
-    bool isPurchased = false;
+    public static ShopManager instance;
+    public Slider healthSlider;
+    public int maxHealth = 100, maxDamage = 30;
+    int currentHealth, currentDamage;
 
     private void Awake()
     {
-        Debug.Log(shopButtons.Length);
-    }
-
-    void Update()
-    {
-        moneyText.text = "Money: " + money.ToString();
-
-        if(shopButtons != null && shopButtons.Length >= 3)
+        if (instance == null)
         {
-            shopButtons[0].interactable = money >= 50;
-            shopButtons[1].interactable = money >= 30;
-            shopButtons[2].interactable = money >= 70;
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
-    public void BuyHealth()
+    private void Start()
     {
-        shopIndex = 0;
-        if(isPurchased)
+        SetDefs();
+    }
+
+    void SetDefs()
+    {
+        PlayerPrefs.SetInt("MaxDamage", 10);
+        PlayerPrefs.SetInt("MaxHealth", 100);
+
+       healthSlider.maxValue = maxHealth;
+       healthSlider.value = currentHealth;
+    }
+
+    public void UpgradeHealth()
+    {
+        if (currentHealth < maxHealth)
         {
-            money -= 50;
-            Debug.Log("Health Purchased");
-            Debug.Log("Remaining Money: " + money);
+            currentHealth += 20;
+            PlayerPrefs.SetInt("MaxHealth", currentHealth);
+            healthSlider.value = currentHealth;
+            Debug.Log("Health Upgraded to: " + currentHealth);
+        }
+        else
+        {
+            Debug.Log("Health is already at maximum!");
         }
     }
 
-    public void BuyDamage()
+    public void UpgradeDamage()
     {
-        shopIndex = 1;
-        if(isPurchased)
+        if (currentDamage < maxDamage)
         {
-            money -= 30;
-            Debug.Log("Damage Purchased");
-            Debug.Log("Remaining Money: " + money);
+            currentDamage += 5;
+            PlayerPrefs.SetInt("MaxDamage", currentDamage);
+            Debug.Log("Damage Upgraded to: " + currentDamage);
         }
-    }
-
-    public void BuyShield()
-    {
-        shopIndex = 2;
-        if(isPurchased)
+        else
         {
-            money -= 70;
-            Debug.Log("Shield Purchased");
-            Debug.Log("Remaining Money: " + money);
+            Debug.Log("Damage is already at maximum!");
         }
     }
 }
