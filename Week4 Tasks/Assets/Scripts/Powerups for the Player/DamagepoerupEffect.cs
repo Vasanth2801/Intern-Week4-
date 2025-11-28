@@ -4,6 +4,9 @@ public class DamagepoerupEffect : MonoBehaviour
 {
     [SerializeField] private DamagePowerup damagePower;
 
+
+    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -17,7 +20,7 @@ public class DamagepoerupEffect : MonoBehaviour
     {
         //Check the Collison 
         Debug.Log("Powerup Collected");
-         
+        AudioManager.Instance.PlayDamageBuff();
         target.StorePowerup(damagePower);
 
         //Destroy the Powerup Object

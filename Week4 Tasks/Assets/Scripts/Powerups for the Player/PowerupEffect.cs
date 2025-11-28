@@ -4,6 +4,7 @@ public class PowerupEffect : MonoBehaviour
 {
     [SerializeField] private SpeedPowerup powerup;
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -17,7 +18,7 @@ public class PowerupEffect : MonoBehaviour
     {
         //Check the Collison 
         Debug.Log("Powerup Collected");
-
+        AudioManager.Instance.PlaySpeed();
         target.ApplyPowerup(powerup);
 
         //Destroy the Powerup Object

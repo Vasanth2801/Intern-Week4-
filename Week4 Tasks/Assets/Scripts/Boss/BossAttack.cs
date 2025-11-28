@@ -19,7 +19,12 @@ public class BossAttack : MonoBehaviour
         Collider2D hit = Physics2D.OverlapCircle(pos, attackRange, attackMask);
         if(hit != null)
         {
-            Debug.Log("Boss Attack Hit: " + hit.name);
+            var ph = hit.GetComponent<PlayerHealth>();
+            if (ph != null)
+            {
+                ph.PlayerDamage(10);
+                Debug.Log("Boss Attack Hit: " + hit.name);
+            }
         }
     }
 
@@ -31,7 +36,12 @@ public class BossAttack : MonoBehaviour
         Collider2D hit = Physics2D.OverlapCircle(pos, attackRange, attackMask);
         if(hit != null)
         {
-            Debug.Log("Boss Angry Attack Hit: " + hit.name);
+            var ph = hit.GetComponent<PlayerHealth>();
+            if (ph != null)
+            {
+                ph.PlayerDamage(15);
+                Debug.Log("Boss Angry Attack Hit: " + hit.name);
+            }
         }
     }
 

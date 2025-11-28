@@ -24,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
         }
         if (currentHealth <= 0)
         {
+            AudioManager.Instance.PlayDeath();
             currentHealth = 0;
             Destroy(gameObject);
             if (UIManager.instance != null)

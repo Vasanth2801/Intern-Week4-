@@ -271,10 +271,11 @@ MonoBehaviour:
   speed: 2
   facingDirection: 1
   attackPoint: {fileID: 9206359396439669047}
-  attackRange: 1.09
+  attackRange: 0.54
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  attackCooldown: 1
 --- !u!58 &453804256484074284
 CircleCollider2D:
   m_ObjectHideFlags: 0

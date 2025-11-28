@@ -62,9 +62,7 @@ public class PlayerMovement : MonoBehaviour
         MovementCalling();
         Dashing();
 
-      
         baseSpeed = speed;
-
         currentStamina = maxStamina;
         staminaBar.value = currentStamina / maxStamina;
     }
@@ -134,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
         {
             shieldObject.SetActive(true);
             isShielded = true;
+            AudioManager.Instance.PlayShield();
             NoShield();
         }
     }
@@ -191,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
                 var eh = hit.GetComponent<EnemyHealth>();
                 if (eh != null)
                 {
+                    AudioManager.Instance.PlayAttack();
                     eh.TakeDamage(attackDamage);
                     Debug.Log("Damage done to enemy ");
                 }
@@ -198,6 +198,7 @@ public class PlayerMovement : MonoBehaviour
                 var bh = hit.GetComponent<BossHealth>();
                 if (bh != null)
                 {
+                    AudioManager.Instance.PlayAttack();
                     bh.BossTakeDamge(attackDamage);
                     Debug.Log("Damage done to boss ");
                 }

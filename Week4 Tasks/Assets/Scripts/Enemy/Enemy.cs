@@ -98,7 +98,6 @@ public class Enemy : MonoBehaviour
 
             yield return new WaitForSeconds(attackCooldown);
         }
-
         isAttacking = false;
     }
 
@@ -124,6 +123,7 @@ public class Enemy : MonoBehaviour
             PlayerHealth ph = player.GetComponent<PlayerHealth>();
             if (ph != null)
             {
+                AudioManager.Instance.PlayHit();
                 ph.PlayerDamage(5);
             }
         }

@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject bgPanel;
 
+
     private void Awake()
     {
         if(instance == null)
@@ -49,6 +50,7 @@ public class UIManager : MonoBehaviour
     
     public void Resume()
     {
+        AudioManager.Instance.PlayResume();
         pauseMenuUI.SetActive(false);
         bgPanel.SetActive(false);
         Time.timeScale = 1f;
@@ -57,6 +59,7 @@ public class UIManager : MonoBehaviour
 
     void Pause()
     {
+        AudioManager.Instance.PlayPause();
         pauseMenuUI.SetActive(true);
         bgPanel.SetActive(true);
         Time.timeScale = 0f;
@@ -102,7 +105,7 @@ public class UIManager : MonoBehaviour
         if(DataManager.instance != null)
         {
             DataManager.instance.LoadFromJson();
-           currencyText.text = "Currency: " + DataManager.instance.enemyState.killCount;
+            currencyText.text = "Currency: " + DataManager.instance.enemyState.killCount;
             SetKillCount(DataManager.instance.enemyState.killCount);
         }
         else
@@ -132,6 +135,7 @@ public class UIManager : MonoBehaviour
     public void GameOver()
     {
         gameOverMenu.SetActive(true);
+        AudioManager.Instance.PlayGameOver();
         Time.timeScale = 0f;
     }
 

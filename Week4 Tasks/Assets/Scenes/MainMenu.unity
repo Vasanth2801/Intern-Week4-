@@ -2161,6 +2161,16 @@ MonoBehaviour:
   musicSource: {fileID: 374359759}
   sfxSource: {fileID: 772247506}
   bgMusic: {fileID: 8300000, guid: e0099cd930501a846a598c5147d93665, type: 3}
+  death: {fileID: 8300000, guid: 8698e45711dc13547ada232e1d3ea399, type: 3}
+  hit: {fileID: 8300000, guid: 0e1457ebf7dc95b4db34ba2fa89929fc, type: 3}
+  Attack: {fileID: 8300000, guid: 1ac2be35c2391fb4db663b57419e06d0, type: 3}
+  win: {fileID: 8300000, guid: 7478151cf36724a7dada558f746c3633, type: 3}
+  gameOver: {fileID: 8300000, guid: 5039414d94a6e4e70a5ab9e8833e992a, type: 3}
+  speed: {fileID: 8300000, guid: 6cf9c85b5a3b88c468b21b9d21250adf, type: 3}
+  DamageBuff: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+  shield: {fileID: 8300000, guid: 00e4eb96f4f6cc249a632e4027644cad, type: 3}
+  pause: {fileID: 8300000, guid: b83bf8726a7fac349a54389f0c57cda6, type: 3}
+  resume: {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
 --- !u!1 &438657624
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class BossTrigger : MonoBehaviour
         {
             boss.SetActive(true);
             Debug.Log("Boss Triggered");
+            Destroy(this.gameObject);
         }
     }
 }

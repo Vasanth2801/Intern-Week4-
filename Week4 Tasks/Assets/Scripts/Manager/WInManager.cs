@@ -1,10 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class WInManager : MonoBehaviour
 {
     [SerializeField] GameObject winUI;
-    [SerializeField] float time = 2f;
+    [SerializeField] GameObject bgPanel;
+    [SerializeField] float time = 0.1f;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -15,9 +17,11 @@ public class WInManager : MonoBehaviour
     }
 
     IEnumerator WinGame()
-    {
+    { 
+        yield return new WaitForSeconds(time);
         winUI.SetActive(true);
-        Time.timeScale = 0f; 
-        yield return new WaitForSecondsRealtime(time);
+        bgPanel.SetActive(true);
+        AudioManager.Instance.PlayWin();
+        Time.timeScale = 0f;
     }
 }
