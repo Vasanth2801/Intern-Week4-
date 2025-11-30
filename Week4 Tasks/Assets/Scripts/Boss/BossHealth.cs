@@ -30,7 +30,7 @@ public class BossHealth : MonoBehaviour
 
         healthBar.SetHealth(currentHealth);
         if (currentHealth <= 0)
-        {
+        { 
             Debug.Log("Boss Defeated!");
             Die();
         }

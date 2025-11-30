@@ -1,36 +1,55 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-   public int maxHealth = 100;
-   public int currentHealth;
-   public HealthBar healthBar;
+    public int maxHealth = 100;
+    public int currentHealth;
+    public Slider playerSlider;
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        if (healthBar != null)
+        if (playerSlider != null)
         {
-            healthBar.SetMaxHealth(maxHealth);
+            playerSlider.maxValue = maxHealth;
+            playerSlider.value = currentHealth;
+        }
+        else
+        {
+            Debug.LogWarning($"PlayerHealth: 'playerSlider' not assigned on {gameObject.name}");
         }
     }
 
     public void PlayerDamage(float damage)
     {
         currentHealth -= (int)damage;
-        if (healthBar != null)
-        {
-            healthBar.SetHealth(currentHealth);
-        }
+        currentHealth = Mathf.Max(currentHealth, 0);
+
+        if (playerSlider != null)
+            playerSlider.value = currentHealth;
+
+        Debug.Log($"PlayerDamage {gameObject.name} dmg={damage} cur={currentHealth}");
+
         if (currentHealth <= 0)
         {
-            AudioManager.Instance.PlayDeath();
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayDeath();
+            else
+                Debug.LogWarning("PlayerHealth: AudioManager.Instance is null");
+
             currentHealth = 0;
-            Destroy(gameObject);
+
             if (UIManager.instance != null)
             {
                 UIManager.instance.GameOver();
             }
+            else
+            {
+                Debug.LogWarning("PlayerHealth: UIManager.instance is null - GameOver won't be shown");
+            }
+
+            Destroy(gameObject);
         }
     }
 }

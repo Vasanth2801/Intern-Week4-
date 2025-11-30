@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject bgPanel;
 
-
     private void Awake()
     {
         if(instance == null)

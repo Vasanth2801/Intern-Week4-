@@ -103,7 +103,10 @@ public class Enemy : MonoBehaviour
 
     void Attack()
     {
-        animator.SetTrigger("Attack");   
+        if(animator!= null)
+        {
+            animator.SetTrigger("Attack");
+        }
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayer);
 
         foreach(Collider2D hitCollider in hitPlayer)
